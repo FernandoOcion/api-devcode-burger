@@ -3,10 +3,11 @@ import * as Yup from 'yup';
 import authConfig from '../../config/auth';
 import User from '../models/User';
 
+
 class SessionController {
-    async store(request,response){
+    async store(request, response) {
         const schema = Yup.object({
-            email:Yup.string().email().required(),
+            email: Yup.string().email().required(),
             password: Yup.string().min(6).required(),
         });
 
@@ -14,29 +15,29 @@ class SessionController {
 
         const emailOrPasswordIncorrect = () =>
             response
-            .status(401)
-            .json({error: 'Make sure your email or password are correct'})
-        
+                .status(401)
+                .json({ error: 'Make sure your email or password are correct' })
 
-        if(!isValid){
+
+        if (!isValid) {
             return emailOrPasswordIncorrect();
         }
 
-        const {email, password} = request.body;
+        const { email, password } = request.body;
 
         const user = await User.findOne({
-            where:{
+            where: {
                 email,
             },
         });
 
-        if (!user){
+        if (!user) {
             return emailOrPasswordIncorrect();
         }
 
         const isSamePassword = await user.checkPassword(password);
 
-        if (!isSamePassword){
+        if (!isSamePassword) {
             return emailOrPasswordIncorrect();
         }
 
@@ -45,8 +46,8 @@ class SessionController {
             name: user.name,
             email,
             admin: user.admin,
-           // yarn add jsonwebtoken para usar jwt
-            token: jwt.sign({id: user.id, name: user.name,}, authConfig.secret, {
+            // yarn add jsonwebtoken para usar jwt
+            token: jwt.sign({ id: user.id, name: user.name, }, authConfig.secret, {
                 expiresIn: authConfig.expiresIn,
             })
             // md5 para gerar o código
