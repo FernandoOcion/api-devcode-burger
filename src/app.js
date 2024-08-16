@@ -5,11 +5,7 @@
 // yarn sucrase -D (Para usar (import BLABLA from 'BLABLA'))
 // criar o arquivo nodemon.json com o que está escrito dentro
 // yarn dev
-// yarn add eslint -D (Para padronizar o código)
-// yarn eslint --init (para configurar)
-// yarn add prettier eslint-config-prettier eslint-plugin-prettier -D
 // yarn add cors
-
 
 import cors from "cors";
 import express from "express";
@@ -18,31 +14,29 @@ import "./database";
 import routes from "./routes";
 
 class App {
-    constructor() {
-        this.app = express();
+	constructor() {
+		this.app = express();
 
-        this.app.use(cors());
-        this.middlewares();
-        this.routes();
+		this.app.use(cors());
+		this.middlewares();
+		this.routes();
+	}
+	middlewares() {
+		this.app.use(express.json());
+		this.app.use(
+			"/product-file",
+			express.static(resolve(__dirname, "..", "uploads")),
+		);
 
-    }
-    middlewares() {
-        this.app.use(express.json());
-        this.app.use(
-            '/product-file',
-            express.static(resolve(__dirname, '..', 'uploads')),
-        );
+		this.app.use(
+			"/category-file",
+			express.static(resolve(__dirname, "..", "uploads")),
+		);
+	}
 
-        this.app.use(
-            '/category-file',
-            express.static(resolve(__dirname, '..', 'uploads')),
-        );
-    }
-
-    routes() {
-        this.app.use(routes);
-    }
-
+	routes() {
+		this.app.use(routes);
+	}
 }
 
 export default new App().app;

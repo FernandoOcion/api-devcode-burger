@@ -1,5 +1,3 @@
-// yarn sequelize migration:create --name create-users-table
-
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -46,7 +44,11 @@ module.exports = {
   }
 };
 
+// yarn sequelize migration:create --name create-users-table
+// (Para criar)
+
 // yarn sequelize db:migrate
+// (Para enviar)
 
 // Para remover, tem que criar uma nova migration
 // yarn sequelize migration:create --name remove-categories-column
